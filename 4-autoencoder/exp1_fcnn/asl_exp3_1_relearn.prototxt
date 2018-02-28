@@ -1,0 +1,94 @@
+name: "SimpleFCN"
+layer {
+  name: "asl"
+  type: "ImageData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.0039215689
+  }
+  image_data_param {
+    source: "/home/epaul/ASL/train.lst"
+    batch_size: 100
+    shuffle: true
+    new_height: 128
+    new_width: 128
+    is_color: false
+  }
+}
+layer {
+  name: "asl"
+  type: "ImageData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.0039215689
+  }
+  image_data_param {
+    source: "/home/epaul/ASL/test.lst"
+    shuffle: true
+    new_height: 128
+    new_width: 128
+    batch_size: 100
+    is_color: false
+  }
+}
+layer {
+  name: "hidden"
+  type: "InnerProduct"
+  bottom: "data"
+  top: "hidden"
+  inner_product_param {
+    num_output: 1000
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "sigmoid"
+  type: "Sigmoid"
+  bottom: "hidden"
+  top: "sigmoid"
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "sigmoid"
+  top: "ip"
+  inner_product_param {
+    num_output: 31
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "loss"
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}

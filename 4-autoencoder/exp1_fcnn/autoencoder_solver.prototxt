@@ -1,0 +1,28 @@
+# The train/test net protocol buffer definition
+net: "/home/epaul/ASL/lab3/exp1_fcnn/asl_exp3_1_autoencoder.prototxt"
+# test_iter specifies how many forward passes the test should carry out.
+# In the case of ASL, we have test batch size 100 and 62 test iterations,
+# covering the full 6200 testing images.
+test_iter: 62
+# Carry out testing every 100 training iterations.
+test_interval: 100
+# The base learning rate, momentum and the weight decay of the network.
+base_lr: 0.01
+momentum: 0.9
+weight_decay: 0.0009
+test_compute_loss: true
+# The learning rate policy
+lr_policy: "step"
+gamma: 0.1
+stepsize: 1000
+# Display every 100 iterations
+display: 100
+# The maximum number of iterations
+max_iter: 2000
+# snapshot intermediate results
+snapshot: 1000
+snapshot_prefix: "/home/epaul/ASL/lab3/exp1_fcnn/asl_exp3_1_autoencoder/asl_exp3_1_autoencoder"
+# solver mode: CPU or GPU
+solver_mode: GPU
+# type: Stochastic Gradient Descent "SGD"
+type: "SGD"
